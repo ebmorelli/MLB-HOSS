@@ -20,8 +20,7 @@ for team in teams:
     roster = tables[0]
     team_pitchers = roster[roster['Unnamed: 4'] == 'Pitcher'][['Name', 'Ht', 'Wt']]
     pitchers = team_pitchers if pitchers is None else pd.concat([pitchers, team_pitchers], ignore_index=True)
-    time.sleep(1)
 
 # Keep Name, Height, Weight
 print(pitchers)
-pitchers.to_csv("pitchers.csv")
+pitchers.to_csv("pitchers_br.csv")
