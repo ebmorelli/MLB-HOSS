@@ -1,8 +1,8 @@
 # ⚾ MLB-HOSS
 
-https://medium.com/@edmo2495/hoss-a-new-statistic-for-dominant-and-slightly-overweight-mlb-pitchers-3d55c69ac35c
-
 Aiming to define a new MLB statistic, **HOSS**.
+
+https://medium.com/@edmo2495/hoss-a-new-statistic-for-dominant-and-slightly-overweight-mlb-pitchers-3d55c69ac35c
 
 In this project, a "**Hoss**" will be defined as a big-bodied, physically imposing power pitcher. A **Hoss** not only dominates with pitch velocity and movement, but with his **_overweight aura_**.
 
