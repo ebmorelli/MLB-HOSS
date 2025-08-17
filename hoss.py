@@ -95,7 +95,7 @@ def main():
     pitchers_bref = pull_data_bref()
     pitchers_fg = pull_data_fg()
 
-    logging.info(f"Calculating HOSS")
+    logging.info(f"Calculating HOSS for {hoss_year}")
     pitchers_hoss = pd.merge(
         pitchers_bref, 
         pitchers_fg, 
@@ -105,10 +105,12 @@ def main():
 
     pitchers_hoss["HOSS"] = pitchers_hoss["BMI_z"] + pitchers_hoss["WAR_z"] + pitchers_hoss["fbv_z"]
 
-    pitchers_hoss["HOSS_status"] = (pitchers_hoss["BMI_z"] > 1) & (pitchers_hoss["WAR_z"] > 1) & (pitchers_hoss["fbv_z"] > 1)
+    pitchers_hoss["HOSS_status"] = (pitchers_hoss["BMI_z"] > 1) & (pitchers_hoss["WAR_z"] > 1) & (pitchers_hoss["fbv_z"] > 1) | (pitchers_hoss["HOSS"] > 6)
     pitchers_sorted = pitchers_hoss.sort_values(by='HOSS', ascending=False)
     pitchers_sorted.to_csv(f"pitcher_data/pitchers_hoss_{hoss_year}.csv")
     print(pitchers_sorted[["Name", "BMI_z", "WAR_z", "fbv_z", "HOSS", "HOSS_status"]].head(10))
 
 if __name__ == "__main__":
-    main()
+    for i in range(2025, 2001, -1):
+        hoss_year = i
+        main()
