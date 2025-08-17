@@ -8,6 +8,7 @@ import pybaseball
 import logging
 import requests
 from io import StringIO
+import unicodedata
 
 load_dotenv()  # get environment variables from .env
 
@@ -20,12 +21,24 @@ logging.basicConfig(
 hoss_year = int(os.getenv("HOSS_YEAR"))
 
 def height_to_inches(height_str):
+    """Helper function to convert <ft><in> height format to just inches"""
     if "-" in height_str:
         feet, inches = height_str.split("-")
     else:
         feet, inches = height_str.split("'")
         inches = inches.replace('"', '').strip()
     return int(feet) * 12 + int(inches)
+
+
+def remove_accents(text):
+    """Helper function to strip accents from names"""
+    text = text.encode("latin1").decode("utf-8", errors="ignore")
+    if isinstance(text, str):
+        return ''.join(
+            c for c in unicodedata.normalize('NFKD', text)
+            if not unicodedata.combining(c)
+        )
+    return text
 
 def pull_data_bref() -> pd.DataFrame:
     """
@@ -51,6 +64,7 @@ def pull_data_bref() -> pd.DataFrame:
                 team_pitchers = roster[roster['Unnamed: 4'] == 'Pitcher'][['Name', 'Ht', 'Wt']]
             pitchers = team_pitchers if pitchers is None else pd.concat([pitchers, team_pitchers], ignore_index=True)
 
+        pitchers["Name"] = pitchers["Name"].apply(remove_accents)
         pitchers.to_csv(f"pitcher_data/pitchers_bref_{hoss_year}.csv")
     
     pitchers = pd.read_csv(f"pitcher_data/pitchers_bref_{hoss_year}.csv")
