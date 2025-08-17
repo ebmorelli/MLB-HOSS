@@ -1,9 +1,9 @@
-# MLB-HOSS
+# ⚾ MLB-HOSS
 Aiming to define a new MLB statistic, **HOSS**.
 
 In this project, a "**Hoss**" will be defined as a big-bodied, physically imposing power pitcher. A **Hoss** not only dominates with pitch velocity and movement, but with his **_overweight aura_**.
 
-## Examples
+## Who is a HOSS?>
 Some pitchers I would expect to have a high HOSS statistic:
 - Roger Clemens
 - CC Sabathia
@@ -11,10 +11,14 @@ Some pitchers I would expect to have a high HOSS statistic:
 - Tarik Skubal
 - Paul Skenes
 
-## Counter-Examples
+These are not just Aces, they are **Hosses**.
+
+## Who is not a HOSS?
 The opposite of a **Hoss** is a *pipsqueak*. A *pipsqueak* dances around the edge of the zone with an 89-91 mph fastball and throws various above-average breaking balls. A *pipsqueak* may be an effective pitcher, but has nowhere near the aura of a **Hoss**.
 
 # Results
+
+## HOSS in Action
 
 The following are seasons classified as **Hoss** Seasons, ranked by the **HOSS** statistic.
 
@@ -46,6 +50,10 @@ The following are seasons classified as **Hoss** Seasons, ranked by the **HOSS**
 | Jon Lester      | 2009 | 30.305921 | 5.4 | 93.7 | 3.483460 |
 | Jon Lester      | 2010 | 30.305921 | 4.9 | 93.3 | 3.446688 |
 
+Bartolo Colon: the platinum **HOSS**
+
+## Pipsqueaks 
+
 The most *pipsqueak* seasons?
 
 | Name           | Year | BMI       | WAR  | FB Velocity | HOSS      |
@@ -56,4 +64,4 @@ The most *pipsqueak* seasons?
 | Bronson Arroyo | 2011 | 23.120889 | -1.6 | 87.0 | -6.163739 |
 | Jamie Moyer    | 2004 | 23.053627 | -0.2 | 81.6 | -5.456239 |
 
-Sorry, Jamie.
+Sorry, Jamie. 😢
