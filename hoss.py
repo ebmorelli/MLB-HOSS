@@ -20,8 +20,11 @@ logging.basicConfig(
 hoss_year = os.getenv("HOSS_YEAR")
 
 def height_to_inches(height_str):
-    feet, inches = height_str.split("'")
-    inches = inches.replace('"', '').strip()
+    if "-" in height_str:
+        feet, inches = height_str.split("-")
+    else:
+        feet, inches = height_str.split("'")
+        inches = inches.replace('"', '').strip()
     return int(feet) * 12 + int(inches)
 
 def pull_data_bref() -> pd.DataFrame:
@@ -47,7 +50,11 @@ def pull_data_bref() -> pd.DataFrame:
             clean_html = html.replace("<!--", "").replace("-->", "")
             tables = pd.read_html(StringIO(clean_html))
             roster = tables[0]
-            team_pitchers = roster[roster['Unnamed: 4'] == 'Pitcher'][['Name', 'Ht', 'Wt']]
+            if hoss_year < 2025:
+                team_pitchers = roster[roster["P"] > 10][['Player', 'Ht', 'Wt']]
+                team_pitchers.rename(columns={"Player": "Name"}, inplace=True)
+            else:
+                team_pitchers = roster[roster['Unnamed: 4'] == 'Pitcher'][['Name', 'Ht', 'Wt']]
             pitchers = team_pitchers if pitchers is None else pd.concat([pitchers, team_pitchers], ignore_index=True)
 
         pitchers.to_csv(f"pitcher_data/pitchers_bref_{hoss_year}.csv")
