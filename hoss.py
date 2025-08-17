@@ -111,6 +111,7 @@ def main():
     print(pitchers_sorted[["Name", "BMI_z", "WAR_z", "fbv_z", "HOSS", "HOSS_status"]].head(10))
 
 if __name__ == "__main__":
-    for i in range(2025, 2001, -1):
-        hoss_year = i
-        main()
+    main()
+    # for i in range(2025, 2001, -1):
+    #     hoss_year = i
+    #     main()
