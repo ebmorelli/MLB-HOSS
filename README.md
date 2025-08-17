@@ -17,7 +17,8 @@ The opposite of a **Hoss** is a *pipsqueak*. A *pipsqueak* dances around the edg
 # Results
 
 The following are seasons classified as **Hoss** Seasons, ranked by the **HOSS** statistic.
-Note: FanGraphs does not contain pitching data pre-2002, so that is the oldest season in this calculation.
+
+**Note: FanGraphs does not contain pitching data pre-2002, so that is the oldest season in this calculation.**
 
 | Name            | Year | BMI       | WAR | FB Velocity | HOSS     |
 | --------------- | ---- | --------- | --- | ---- | -------- |
