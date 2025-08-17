@@ -17,7 +17,7 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
 )
 
-hoss_year = os.getenv("HOSS_YEAR")
+hoss_year = int(os.getenv("HOSS_YEAR"))
 
 def height_to_inches(height_str):
     if "-" in height_str:
@@ -73,7 +73,7 @@ def pull_data_fg() -> pd.DataFrame:
     else:
         logging.info(f"Pulling {hoss_year} data from FanGraphs")
         # only pulling stats that I think can be relative to HOSS score
-        stat_columns = ["Name", "WAR", "G", "GS", "SO", "K/9", "FIP", "K%", "FB% 2", "vFA (sc)", "vSI (sc)", "vFC (sc)", "Zone%", "SwStr%", "Stuff+", "Pitching+"]
+        stat_columns = ["Name", "WAR", "G", "GS", "SO", "K/9", "FIP", "K%", "FB% 2", "FBv", "CTv", "Zone%", "SwStr%", "Stuff+", "Pitching+"]
 
         pitching_stats = pybaseball.pitching_stats(
             start_season=hoss_year,
@@ -84,7 +84,7 @@ def pull_data_fg() -> pd.DataFrame:
         pitching_stats.to_csv(f"pitcher_data/pitchers_fg_{hoss_year}.csv")
     
     # Transform data and calculate Fastball Velo z-score and WAR z-score
-    pitching_stats["fb_velo"] = pitching_stats[["vFA (sc)", "vSI (sc)", "vFC (sc)",]].max(axis=1, skipna=True)
+    pitching_stats["fb_velo"] = pitching_stats[["FBv", "CTv"]].max(axis=1, skipna=True)
     pitching_stats['fbv_z'] = (pitching_stats['fb_velo'] - pitching_stats['fb_velo'].mean()) / pitching_stats['fb_velo'].std()
     pitching_stats["WAR_z"] = (pitching_stats["WAR"] - pitching_stats["WAR"].mean()) / pitching_stats["WAR"].std()
 
