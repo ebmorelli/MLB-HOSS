@@ -71,7 +71,7 @@ def pull_data_bref() -> pd.DataFrame:
     # Transform data and calculate BMI
     pitchers['height_inches'] = pitchers['Ht'].apply(height_to_inches).apply(int)
     pitchers["Wt"].apply(int)
-    pitchers["BMI"] = pitchers["Wt"] / (pitchers["height_inches"])**2
+    pitchers["BMI"] = 703 * pitchers["Wt"] / (pitchers["height_inches"])**2
     pitchers["BMI_z"] = (pitchers["BMI"] - pitchers["BMI"].mean()) / pitchers["BMI"].std()
 
     return pitchers
@@ -129,7 +129,7 @@ def main():
 
     pitchers_hoss["HOSS"] = pitchers_hoss["BMI_z"] + pitchers_hoss["WAR_z"] + pitchers_hoss["fbv_z"]
 
-    pitchers_hoss["HOSS_status"] = (pitchers_hoss["BMI_z"] > 1) & (pitchers_hoss["WAR_z"] > 1) & (pitchers_hoss["fbv_z"] > 1) | (pitchers_hoss["HOSS"] > 6)
+    pitchers_hoss["HOSS_status"] = ((pitchers_hoss["BMI_z"] > 1) & (pitchers_hoss["WAR_z"] > 1) & (pitchers_hoss["fbv_z"] > 1)) | ((pitchers_hoss["BMI_z"] > 1) & (pitchers_hoss["HOSS"] > 5))
     pitchers_sorted = pitchers_hoss.sort_values(by='HOSS', ascending=False)
     pitchers_sorted.to_csv(f"pitcher_data/pitchers_hoss_{hoss_year}.csv", index = False)
     print(pitchers_sorted[["Name", "BMI_z", "WAR_z", "fbv_z", "HOSS", "HOSS_status"]].head(10))
