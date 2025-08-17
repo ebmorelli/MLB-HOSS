@@ -35,13 +35,7 @@ def pull_data_bref() -> pd.DataFrame:
 
     if not f"pitchers_bref_{hoss_year}.csv" in os.listdir("pitcher_data"): # data already pulled
         logging.info(f"Pulling {hoss_year} data from Baseball Reference")
-        teams = [
-            "ARI", "ATL", "BAL", "BOS", "CHC", "CHW", "CIN", "CLE",
-            "COL", "DET", "HOU", "KCR", "LAA", "LAD", "MIA", "MIL",
-            "MIN", "NYM", "NYY", "OAK", "PHI", "PIT", "SDP", "SEA",
-            "SFG", "STL", "TBR", "TEX", "TOR", "WSN"
-        ]
-
+        teams = pybaseball.team_batting(hoss_year)["Team"].unique().tolist()
         pitchers = None
         for team in teams:
             url = f"https://www.baseball-reference.com/teams/{team}/{hoss_year}-roster.shtml"
