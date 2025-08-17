@@ -65,7 +65,7 @@ def pull_data_bref() -> pd.DataFrame:
             pitchers = team_pitchers if pitchers is None else pd.concat([pitchers, team_pitchers], ignore_index=True)
 
         pitchers["Name"] = pitchers["Name"].apply(remove_accents)
-        pitchers.to_csv(f"pitcher_data/pitchers_bref_{hoss_year}.csv")
+        pitchers.to_csv(f"pitcher_data/pitchers_bref_{hoss_year}.csv", index = False)
     
     pitchers = pd.read_csv(f"pitcher_data/pitchers_bref_{hoss_year}.csv")
     # Transform data and calculate BMI
@@ -87,7 +87,7 @@ def pull_data_fg() -> pd.DataFrame:
     else:
         logging.info(f"Pulling {hoss_year} data from FanGraphs")
         # only pulling stats that I think can be relative to HOSS score
-        stat_columns = ["Name", "WAR", "G", "GS", "SO", "K/9", "FIP", "K%", "FB% 2", "FBv", "CTv", "Zone%", "SwStr%", "Stuff+", "Pitching+"]
+        stat_columns = ["Name", "Team", "WAR", "G", "GS", "SO", "K/9", "FIP", "K%", "FB% 2", "FBv", "CTv", "Zone%", "SwStr%", "Stuff+", "Pitching+"]
 
         pitching_stats = pybaseball.pitching_stats(
             start_season=hoss_year,
@@ -95,7 +95,7 @@ def pull_data_fg() -> pd.DataFrame:
         ) # default qual parameter means only qualifying pitchers' data is pulled
 
         pitching_stats = pitching_stats[stat_columns]
-        pitching_stats.to_csv(f"pitcher_data/pitchers_fg_{hoss_year}.csv")
+        pitching_stats.to_csv(f"pitcher_data/pitchers_fg_{hoss_year}.csv", index = False)
     
     # Transform data and calculate Fastball Velo z-score and WAR z-score
     pitching_stats["fb_velo"] = pitching_stats[["FBv", "CTv"]].max(axis=1, skipna=True)
@@ -117,15 +117,25 @@ def main():
         how="left"
     )
 
+    players = set(pitchers_hoss["Name"])
+    players
+
+    for player in players:
+        filtered = pitchers_hoss[pitchers_hoss["Name"] == player]
+        if len(filtered) > 1:
+            pitchers_hoss.loc[pitchers_hoss["Name"] == player, "Team"] = "2TM"
+
+    pitchers_hoss = pitchers_hoss.drop_duplicates(subset=["Name"])
+
     pitchers_hoss["HOSS"] = pitchers_hoss["BMI_z"] + pitchers_hoss["WAR_z"] + pitchers_hoss["fbv_z"]
 
     pitchers_hoss["HOSS_status"] = (pitchers_hoss["BMI_z"] > 1) & (pitchers_hoss["WAR_z"] > 1) & (pitchers_hoss["fbv_z"] > 1) | (pitchers_hoss["HOSS"] > 6)
     pitchers_sorted = pitchers_hoss.sort_values(by='HOSS', ascending=False)
-    pitchers_sorted.to_csv(f"pitcher_data/pitchers_hoss_{hoss_year}.csv")
+    pitchers_sorted.to_csv(f"pitcher_data/pitchers_hoss_{hoss_year}.csv", index = False)
     print(pitchers_sorted[["Name", "BMI_z", "WAR_z", "fbv_z", "HOSS", "HOSS_status"]].head(10))
 
 if __name__ == "__main__":
-    main()
-    # for i in range(2025, 2001, -1):
-    #     hoss_year = i
-    #     main()
+    # main()
+    for i in range(2025, 2001, -1):
+        hoss_year = i
+        main()
